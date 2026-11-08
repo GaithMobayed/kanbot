@@ -9,6 +9,7 @@ interface TodoActionsMenuProps {
   listLength: number
   availableSprints: Sprint[]
   onMoveTodo: (todo: Todo, sprintId: string | null, position: number) => void
+  onMenuOpenChange?: (open: boolean) => void
 }
 
 export function TodoActionsMenu({
@@ -17,13 +18,27 @@ export function TodoActionsMenu({
   listLength,
   availableSprints,
   onMoveTodo,
+  onMenuOpenChange,
 }: TodoActionsMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuId = useId()
 
+  function toggleMenu() {
+    setMenuOpen((open) => {
+      const nextOpen = !open
+      onMenuOpenChange?.(nextOpen)
+      return nextOpen
+    })
+  }
+
+  function closeMenu() {
+    setMenuOpen(false)
+    onMenuOpenChange?.(false)
+  }
+
   function moveTodoToTop() {
     onMoveTodo(todo, todo.sprintId, 0)
-    setMenuOpen(false)
+    closeMenu()
   }
 
   function moveTodoToBottom() {
@@ -36,7 +51,7 @@ export function TodoActionsMenu({
       : listLength
 
     onMoveTodo(todo, todo.sprintId, position)
-    setMenuOpen(false)
+    closeMenu()
   }
 
   function moveTodoToSprint(sprintId: string) {
@@ -47,12 +62,12 @@ export function TodoActionsMenu({
     if (!sprint) return
 
     onMoveTodo(todo, sprint.id, sprint.stats.byStatus[todo.status])
-    setMenuOpen(false)
+    closeMenu()
   }
 
   function moveTodoToBacklog() {
     onMoveTodo(todo, null, 0)
-    setMenuOpen(false)
+    closeMenu()
   }
 
   return (
@@ -62,7 +77,7 @@ export function TodoActionsMenu({
         aria-label={`More actions for ${todo.key}`}
         aria-expanded={menuOpen}
         aria-controls={menuId}
-        onClick={() => setMenuOpen((open) => !open)}
+        onClick={toggleMenu}
         className="rounded-md p-1.5 text-text-secondary hover:bg-surface-subtle focus-visible:outline-2 focus-visible:outline-primary"
       >
         <MoreHorizontal className="h-4 w-4" aria-hidden="true" />

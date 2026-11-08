@@ -38,24 +38,24 @@ export function BacklogBoard({
   
   
   
-  const sprintCallbacks = useMemo(
-    () =>
-      planned.reduce<
-        Record<
-          string,
-          { onEdit: () => void; onDelete: () => void; onStartSprint: () => void }
-        >
-      >((acc, sprint) => {
-        acc[sprint.id] = {
-          onEdit: () => openModal({ type: 'edit', sprint }),
-          onDelete: () => openModal({ type: 'delete', sprint }),
-          onStartSprint: () => openModal({ type: 'start', sprint }),
-        }
-        return acc
-      }, {}),
-    
-    [planned.map((s) => s.id).join(','), openModal],
-  )
+const sprintCallbacks = useMemo(
+  () =>
+    planned.reduce<
+      Record<
+        string,
+        { onEdit: () => void; onDelete: () => void; onStartSprint: () => void }
+      >
+    >((acc, sprint) => {
+      acc[sprint.id] = {
+        onEdit: () => openModal({ type: 'edit', sprint }),
+        onDelete: () => openModal({ type: 'delete', sprint }),
+        onStartSprint: () => openModal({ type: 'start', sprint }),
+      }
+
+      return acc
+    }, {}),
+  [planned, openModal],
+)
 
   const requestDeleteTodo = useCallback(
     (todo: Todo) => {

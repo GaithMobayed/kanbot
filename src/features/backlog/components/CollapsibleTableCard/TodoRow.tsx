@@ -1,6 +1,6 @@
 
 import type { CSSProperties } from 'react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Trash2 } from 'lucide-react'
@@ -37,6 +37,8 @@ export const TodoRow = memo(function TodoRow({
   onTodoClick,
   staggerIndex = 0,
 }: TodoRowProps) {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const {
     attributes,
     listeners,
@@ -66,7 +68,7 @@ export const TodoRow = memo(function TodoRow({
         'relative flex items-center justify-between gap-3 border-t border-border px-3 py-2',
         'transition-[opacity,transform] duration-150 hover:bg-surface-subtle sm:px-5 sm:py-3',
         'animate-fade-slide-in',
-        isDragging ? 'z-0' : 'z-10',
+        menuOpen ? 'z-[100]' : 'z-0',
       ].join(' ')}
     >
       {isDragging ? (
@@ -140,6 +142,7 @@ export const TodoRow = memo(function TodoRow({
                 listLength={listLength}
                 availableSprints={availableSprints}
                 onMoveTodo={onMoveTodo}
+                onMenuOpenChange={setMenuOpen}
               />
             )}
 

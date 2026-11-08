@@ -67,7 +67,7 @@ export const CollapsibleTableCard = memo(function CollapsibleTableCard({
 
   return (
     <section
-      className="animate-fade-slide-in flex flex-col rounded-lg border border-border bg-surface shadow"
+      className="relative z-0 animate-fade-slide-in flex flex-col rounded-lg border border-border bg-surface shadow"
       style={{ animationDelay: `${staggerIndex * 60}ms` } as CSSProperties}
     >
       <TableHeader
