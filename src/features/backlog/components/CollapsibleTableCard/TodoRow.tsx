@@ -1,9 +1,16 @@
+
 import type { CSSProperties } from 'react'
 import { memo } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Trash2 } from 'lucide-react'
-import { PriorityBadge, StoryPointsBadge, TypeBadge } from '../../../../components/common/Badges'
+
+import {
+  PriorityBadge,
+  StoryPointsBadge,
+  TypeBadge,
+} from '../../../../components/common/Badges'
+
 import type { Sprint, Todo } from '../../../../types/api'
 import { TodoActionsMenu } from './TodoActionsMenu'
 
@@ -15,10 +22,7 @@ interface TodoRowProps {
   availableSprints: Sprint[]
   onMoveTodo?: (todo: Todo, sprintId: string | null, position: number) => void
   onDeleteTodo?: (todo: Todo) => void
-  
-  
   onTodoClick?: (todo: Todo) => void
-  
   staggerIndex?: number
 }
 
@@ -54,20 +58,23 @@ export const TodoRow = memo(function TodoRow({
         {
           transform: CSS.Transform.toString(transform),
           transition,
-          
           opacity: isDragging ? 0 : 1,
           animationDelay: `${staggerIndex * 30}ms`,
         } as CSSProperties
       }
-      className="z-0 animate-fade-slide-in relative flex items-center justify-between gap-3 border-t border-border px-3 py-2 transition-[opacity,transform] duration-150 hover:bg-surface-subtle sm:px-5 sm:py-3"
+      className={[
+        'relative flex items-center justify-between gap-3 border-t border-border px-3 py-2',
+        'transition-[opacity,transform] duration-150 hover:bg-surface-subtle sm:px-5 sm:py-3',
+        'animate-fade-slide-in',
+        isDragging ? 'z-0' : 'z-10',
+      ].join(' ')}
     >
       {isDragging ? (
-        
         <div className="h-10 w-full rounded-md border border-dashed border-border bg-surface-subtle" />
       ) : (
         <>
           <div className="flex min-w-0 flex-1 items-center gap-3">
-            {}
+            {/* Drag handle */}
             <button
               type="button"
               ref={setActivatorNodeRef}
@@ -85,7 +92,7 @@ export const TodoRow = memo(function TodoRow({
               <GripVertical className="h-5 w-5" aria-hidden="true" />
             </button>
 
-            {}
+            {/* Todo information */}
             <button
               type="button"
               onClick={() => onTodoClick?.(todo)}
@@ -95,9 +102,11 @@ export const TodoRow = memo(function TodoRow({
               <span className="shrink-0 rounded-sm bg-primary px-2 py-0.5 font-sans text-caption text-text-inverse">
                 {todo.key}
               </span>
+
               <span className="truncate font-sans text-body text-text-primary">
                 {todo.title}
               </span>
+
               {todo.labels.length > 0 && (
                 <ul
                   aria-label={`${todo.title} labels`}
@@ -116,12 +125,14 @@ export const TodoRow = memo(function TodoRow({
             </button>
           </div>
 
+          {/* Actions and badges */}
           <div className="flex shrink-0 items-center gap-2">
             <div className="hidden items-center gap-2 sm:flex">
               <TypeBadge type={todo.type} />
               <PriorityBadge priority={todo.priority} />
               <StoryPointsBadge points={todo.storyPoints} />
             </div>
+
             {onMoveTodo && (
               <TodoActionsMenu
                 todo={todo}
@@ -131,6 +142,7 @@ export const TodoRow = memo(function TodoRow({
                 onMoveTodo={onMoveTodo}
               />
             )}
+
             {onDeleteTodo && (
               <button
                 type="button"
@@ -149,16 +161,9 @@ export const TodoRow = memo(function TodoRow({
   )
 })
 
-
-
 interface TodoRowOverlayProps {
   todo: Todo
 }
-
-
-
-
-
 
 export function TodoRowOverlay({ todo }: TodoRowOverlayProps) {
   return (
@@ -172,14 +177,20 @@ export function TodoRowOverlay({ todo }: TodoRowOverlayProps) {
       ].join(' ')}
     >
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <GripVertical className="h-5 w-5 shrink-0 text-text-secondary" aria-hidden="true" />
+        <GripVertical
+          className="h-5 w-5 shrink-0 text-text-secondary"
+          aria-hidden="true"
+        />
+
         <span className="shrink-0 rounded-sm bg-primary px-2 py-0.5 font-sans text-caption text-text-inverse">
           {todo.key}
         </span>
+
         <span className="truncate font-sans text-body text-text-primary">
           {todo.title}
         </span>
       </div>
+
       <div className="hidden shrink-0 items-center gap-2 sm:flex">
         <TypeBadge type={todo.type} />
         <PriorityBadge priority={todo.priority} />

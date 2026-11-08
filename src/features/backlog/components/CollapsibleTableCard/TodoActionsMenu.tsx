@@ -1,3 +1,4 @@
+
 import { useId, useState } from 'react'
 import { MoreHorizontal } from 'lucide-react'
 import type { Sprint, Todo } from '../../../../types/api'
@@ -29,9 +30,11 @@ export function TodoActionsMenu({
     const sprint = availableSprints.find(
       (availableSprint) => availableSprint.id === todo.sprintId,
     )
+
     const position = sprint
       ? sprint.stats.byStatus[todo.status]
       : listLength
+
     onMoveTodo(todo, todo.sprintId, position)
     setMenuOpen(false)
   }
@@ -40,6 +43,7 @@ export function TodoActionsMenu({
     const sprint = availableSprints.find(
       (availableSprint) => availableSprint.id === sprintId,
     )
+
     if (!sprint) return
 
     onMoveTodo(todo, sprint.id, sprint.stats.byStatus[todo.status])
@@ -63,12 +67,13 @@ export function TodoActionsMenu({
       >
         <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
       </button>
+
       {menuOpen && (
         <div
           id={menuId}
           role="menu"
           aria-label={`Move ${todo.key}`}
-          className="absolute right-0 z-50 mt-1 flex min-w-44 origin-top-right animate-menu-enter flex-col rounded-md border border-border bg-surface p-1 shadow motion-reduce:animate-none"
+          className="absolute right-0 top-full z-[100] mt-1 flex min-w-44 origin-top-right animate-menu-enter flex-col rounded-md border border-border bg-surface p-1 shadow-lg motion-reduce:animate-none"
         >
           {!dragDisabled && (
             <>
@@ -80,6 +85,7 @@ export function TodoActionsMenu({
               >
                 Move to top
               </button>
+
               <button
                 type="button"
                 role="menuitem"
@@ -90,6 +96,7 @@ export function TodoActionsMenu({
               </button>
             </>
           )}
+
           {todo.sprintId && (
             <button
               type="button"
@@ -100,6 +107,7 @@ export function TodoActionsMenu({
               Move to backlog
             </button>
           )}
+
           {availableSprints
             .filter((sprint) => sprint.id !== todo.sprintId)
             .map((sprint) => (
