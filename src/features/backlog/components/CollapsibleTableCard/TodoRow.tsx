@@ -59,7 +59,7 @@ export const TodoRow = memo(function TodoRow({
           animationDelay: `${staggerIndex * 30}ms`,
         } as CSSProperties
       }
-      className="animate-fade-slide-in relative flex items-center justify-between gap-3 border-t border-border px-3 py-2 transition-[opacity,transform] duration-150 hover:bg-surface-subtle sm:px-5 sm:py-3"
+      className="z-0 animate-fade-slide-in relative flex items-center justify-between gap-3 border-t border-border px-3 py-2 transition-[opacity,transform] duration-150 hover:bg-surface-subtle sm:px-5 sm:py-3"
     >
       {isDragging ? (
         
