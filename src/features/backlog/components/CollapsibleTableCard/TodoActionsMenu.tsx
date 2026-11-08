@@ -68,7 +68,7 @@ export function TodoActionsMenu({
           id={menuId}
           role="menu"
           aria-label={`Move ${todo.key}`}
-          className="absolute right-0 z-20 mt-1 flex min-w-44 origin-top-right animate-menu-enter flex-col rounded-md border border-border bg-surface p-1 shadow motion-reduce:animate-none"
+          className="absolute right-0 z-50 mt-1 flex min-w-44 origin-top-right animate-menu-enter flex-col rounded-md border border-border bg-surface p-1 shadow motion-reduce:animate-none"
         >
           {!dragDisabled && (
             <>
